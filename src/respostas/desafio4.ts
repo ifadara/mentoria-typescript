@@ -9,23 +9,20 @@ const userInfo = {
 const username = document.getElementById('login')! as HTMLInputElement;
 const password = document.getElementById('senha')! as HTMLInputElement;
 const apiKey = document.getElementById('api-key')! as HTMLInputElement;
-const searchField = document.getElementById('search')! as HTMLInputElement;
-const listName = document.getElementById('list-name')! as HTMLInputElement;
-const listDescription = document.getElementById('list-description')! as HTMLInputElement;
-const loginButton = document.getElementById('login-button') as HTMLButtonElement;
-const searchButton = document.getElementById('search-button');
-const searchContainer = document.getElementById('search-container')!;
-const tokenButton = document.getElementById('token-button') as HTMLButtonElement;
-const createListButton = document.getElementById('create-list-button') as HTMLButtonElement;
+let listId = '7101979';
 
+let loginButton = document.getElementById('login-button') as HTMLButtonElement;
+let searchButton = document.getElementById('search-button');
+let searchContainer = document.getElementById('search-container')!;
+let tokenButton = document.getElementById('token-button') as HTMLButtonElement;
 
 tokenButton?.addEventListener('click', function(){
   criarRequestToken()
 })
 
 loginButton?.addEventListener('click', function(){
+  criarRequestToken()
   logar();
-  criarSessao();
 })
 
 searchButton?.addEventListener('click', () => {
@@ -33,58 +30,35 @@ searchButton?.addEventListener('click', () => {
   if (lista) {
     lista.outerHTML = "";
   }
-  let query = searchField.value.toString();
-  let listaDeFilmes = procurarFilme(query);
+  let query = document.getElementById('search') as HTMLInputElement;
+  let listaDeFilmes = procurarFilme(String(query));
   let ul = document.createElement('ul');
   ul.id = "lista"
-  listaDeFilmes.then((onResolve) =>{
-    for (const item of onResolve.results) {
-      let li = document.createElement('li');
-      li.appendChild(document.createTextNode(item.original_title))
-      let addButton = document.createElement('button')
-      li.appendChild(addButton)
-      addButton.addEventListener('click', () =>{
-        adicionarFilme(item.filmeId)
-      })
-      ul.appendChild(li)
-    }
-  })
-
   
   console.log(listaDeFilmes);
   searchContainer.appendChild(ul);
-})
-
-createListButton.addEventListener('click', () => {
-  criarLista(listName.value.toString(), listDescription.value.toString())
 })
 
 
 
 function preencherSenha() {
   userInfo.password = String(password.value);
-  validateTokenButton();
+  validateLoginButton();
 }
 
  function preencherLogin() {
   userInfo.username = String(username.value);
-  validateTokenButton();
+  validateLoginButton();
 }
 
 function preencherApi() {
   userInfo.apiKey = String(apiKey.value);
-  validateTokenButton();
+  validateLoginButton();
 }
 
 function validateLoginButton() {
-  if (userInfo.password && userInfo.username && userInfo.apiKey && userInfo.requestToken) {
-    loginButton.disabled = false;
-    tokenButton.disabled = false;
-  }
-}
-
-function validateTokenButton() {
   if (userInfo.password && userInfo.username && userInfo.apiKey) {
+    loginButton.disabled = false;
     tokenButton.disabled = false;
   }
 }
@@ -128,15 +102,15 @@ class HttpClient {
 function procurarFilme(query: string) {
   query = encodeURI(query)
   console.log(query)
-  let result = HttpClient.get({
+  let result: any = HttpClient.get({
     url: `https://api.themoviedb.org/3/search/movie?api_key=${userInfo.apiKey}&query=${query}`,
     method: "GET"
   })
   return result
 }
 
-function adicionarFilme(filmeId: number) {
-  let result = HttpClient.get({
+function adicionarFilme(filmeId: string) {
+  let result: any = HttpClient.get({
     url: `https://api.themoviedb.org/3/movie/${filmeId}?api_key=${userInfo.apiKey}&language=en-US`,
     method: "GET"
   })
@@ -150,7 +124,6 @@ function criarRequestToken () {
   })
   result
   .then((resolve) => userInfo.requestToken = resolve.request_token)
-  .then(() => validateLoginButton())
   .catch((reject)=> console.log("ERROR"))
   
   console.log(userInfo.requestToken)
@@ -169,13 +142,11 @@ function logar() {
 }
 
  function criarSessao() {
-  const result = HttpClient.get({
+  let result: any = HttpClient.get({
     url: `https://api.themoviedb.org/3/authentication/session/new?api_key=${userInfo.apiKey}&request_token=${userInfo.requestToken}`,
     method: "GET"
   })
-  result
-  .then((resolve) => userInfo.sessionId = resolve.session_id)
-  .catch((reject)=> console.log("ERROR"))
+  userInfo.sessionId = result.session_id;
 }
 
  function criarLista(nomeDaLista: string, descricao: string) {

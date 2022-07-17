@@ -1,35 +1,36 @@
-
-enum Trabalho {
-    Atriz,
-    Padeiro
+type Pessoa = {
+    nome: string
+    idade: number
+    profissao: Profissao
 }
 
-type Humano = {
-    nome: string,
-    idade: number,
-    profissao: Trabalho
+enum Profissao{
+    ATRIZ,
+    PADEIRO
 }
 
-let pessoa1: Humano = {
-    nome: 'maria',
+let maria: Pessoa = {
+    nome: "Maria",
     idade: 29,
-    profissao: Trabalho.Atriz
+    profissao: Profissao.ATRIZ
 };
 
-let pessoa2: Humano = {
-    nome: 'roberto',
+
+let roberto: Pessoa = {
+    nome: "Roberto",
     idade: 19,
-    profissao: Trabalho.Padeiro
-};
+    profissao: Profissao.PADEIRO,
+}
 
-let pessoa3: Humano = {
-    nome: 'laura',
+
+let laura: Pessoa = {
+    nome: "Laura",
     idade: 32,
-    profissao: Trabalho.Atriz
+    profissao: Profissao.ATRIZ
 };
 
-let pessoa4: Humano = {
+let carlos: Pessoa = {
     nome: "carlos",
     idade: 19,
-    profissao: Trabalho.Padeiro
+    profissao: Profissao.PADEIRO
 }
