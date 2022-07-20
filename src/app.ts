@@ -6,6 +6,7 @@ const userInfo = {
   sessionId: ''
 }
 
+let listId = ''
 const username = document.getElementById('login')! as HTMLInputElement;
 const password = document.getElementById('senha')! as HTMLInputElement;
 const apiKey = document.getElementById('api-key')! as HTMLInputElement;
@@ -17,6 +18,7 @@ const searchButton = document.getElementById('search-button');
 const searchContainer = document.getElementById('search-container')!;
 const tokenButton = document.getElementById('token-button') as HTMLButtonElement;
 const createListButton = document.getElementById('create-list-button') as HTMLButtonElement;
+const showList = document.getElementById('show-list') as HTMLButtonElement
 
 
 tokenButton?.addEventListener('click', function(){
@@ -44,7 +46,7 @@ searchButton?.addEventListener('click', () => {
       let addButton = document.createElement('button')
       li.appendChild(addButton)
       addButton.addEventListener('click', () =>{
-        adicionarFilme(item.filmeId)
+        adicionarFilme(item.id)
       })
       ul.appendChild(li)
     }
@@ -59,7 +61,26 @@ createListButton.addEventListener('click', () => {
   criarLista(listName.value.toString(), listDescription.value.toString())
 })
 
+showList?.addEventListener('click', () => {
+  let lista = document.getElementById("lista");
+  if (lista) {
+    lista.outerHTML = "";
+  }
+  let listaDeFilmes = pegarLista();
+  let ul = document.createElement('ul');
+  ul.id = "lista"
+  listaDeFilmes.then((onResolve) =>{
+    for (const item of onResolve.items) {
+      let li = document.createElement('li');
+      li.appendChild(document.createTextNode(item.name))
+      ul.appendChild(li)
+    }
+  })
 
+  
+  console.log(listaDeFilmes);
+  searchContainer.appendChild(ul)
+})
 
 function preencherSenha() {
   userInfo.password = String(password.value);
@@ -189,6 +210,9 @@ function logar() {
     }
   })
   console.log(result);
+   return result.then((onResolved) => listId = onResolved.id)
+  .catch((onRejected) => console.log("ERROR"))
+  
 }
 
  function adicionarFilmeNaLista(filmeId: string, listaId: string) {
@@ -208,4 +232,6 @@ function logar() {
     method: "GET"
   })
   console.log(result);
+  return result
+  
 }

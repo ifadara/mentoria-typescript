@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,24 +8,33 @@
     <title>Document</title>
     <script src="dist/app.js" defer></script>
 </head>
-<body>
-    <div style="display: flex;">
-  <div style="display: flex; width: 300px; height: 150px; justify-content: space-between; flex-direction: column; flex-grow: 6;">
-      <input id="login"  placeholder="Login" onchange="preencherLogin()">
-      <input id="senha"  placeholder="Senha"  type="password" onchange="preencherSenha()">
-      <input id="api-key" placeholder="Api Key" onchange="preencherApi()">
-      <button id="token-button" disabled>Criar token de requisição</button>
-      <button id="login-button" disabled>Login</button>
-  </div>
-  <div id="search-container" style="display: flex; width: 300px; height: 100px; flex-direction: column; flex-grow: 6;">
-      <input id="search" placeholder="Escreva...">
-      <button id="search-button">Pesquisar Filme</button>
-  </div>
-  <div id="movie-list"style="display: flex; width: 300px; height: 100px; flex-direction: column;"> 
-    <input id="list-name" placeholder="Nome da lista">
-    <input id="list-description" placeholder="Descrição">
-    <button id="create-list-button">Criar Lista</button>
-  </div>
-</div>
+
+<body >
+    <div style="display: flex; flex-direction: row; margin-bottom: 20px;">
+        <div style="display: flex; flex-direction: column; ">
+            <input id="login" placeholder="Login" onchange="preencherLogin()">
+            <input id="senha" placeholder="Senha" type="password" onchange="preencherSenha()">
+            <input id="api-key" placeholder="Api Key" onchange="preencherApi()">
+            <button id="token-button" disabled>Criar token de requisição</button>
+            <button id="login-button" disabled>Login</button>
+        </div>
+        <div id="search-container" style="display: flex; flex-direction: column; margin-left: 50px;">
+            <input id="search" placeholder="Escreva...">
+            <button id="search-button">Pesquisar Filme</button>
+        </div>
+        
+    </div>
+    <div style="display: flex; ">
+        <div id="movie-list" style="display: flex; flex-direction: column; ">
+            <input id="list-name" placeholder="Nome da lista">
+            <input id="list-description" placeholder="Descrição">
+            <button id="create-list-button">Criar Lista</button>
+        </div>
+        <div style="display: flex; flex-direction: column; margin-left: 50px;">
+            <button id="show-list">Mostrar Lista</button>
+        </div>
+    </div>
+    
 </body>
+
 </html>
